@@ -1,8 +1,65 @@
 # NeoSi: Synthetic Intelligence (SI) Architecture
 
-This repository contains a symbolic, constructivist Synthetic Intelligence (SI) implementation designed to build relations and concepts online in one-pass without statistical pattern matching or pre-trained models.
+This repository contains a symbolic, constructivist Synthetic Intelligence (SI) implementation that builds relations and concepts online in one-pass without statistical pattern matching, neural weights, or pre-trained models.
 
-For the Python code implementation, see [si.py](file:///root/NeoSi/si.py).
+Unlike mainstream statistical AI (which relies on static embeddings and vector search), **NeoSi** creates a dynamic predicate graph dynamically through interaction.
+
+---
+
+## Quick Start: Live Interactive Playground
+Launch the live interactive terminal playground (which runs the verification suite first):
+```bash
+python3 si.py
+```
+
+### Try These Commands:
+1. **View Pre-Populated Concept Graph**:
+   ```bash
+   SI > graph
+   ```
+   *Displays:*
+   ```text
+   (cat) --[has]--> (fur)
+   (dog) --[has]--> (fur)
+   ```
+2. **Perform Relational Reasoning (Shared Commonalities)**:
+   ```bash
+   SI > What do cat and dog share?
+   SI > fur
+   ```
+3. **Learn and Query New Facts Dynamically**:
+   ```bash
+   SI > Fish likes water.
+   SI > Plant likes water.
+   SI > What do fish and plant share?
+   SI > water
+   ```
+
+---
+
+## How it Works: Relational Intersection
+
+When two facts share a common element, the reasoning engine traverses relational edges in the memory graph and intersects their targets.
+
+```mermaid
+flowchart TD
+    subgraph Memory Graph
+        CatNode[Node: cat] -->|Relation: has| FurNode[Node: fur]
+        DogNode[Node: dog] -->|Relation: has| FurNode
+    end
+    
+    subgraph Reasoning Engine
+        Compare[Compare: 'cat' and 'dog'] --> GetCat[Get Cat Relations: {('has', 'fur')}]
+        Compare --> GetDog[Get Dog Relations: {('has', 'fur')}]
+        GetCat & GetDog --> Intersect[Set Intersection]
+        Intersect --> Result[Result: {('has', 'fur')}]
+    end
+    
+    subgraph Output Generator
+        Result --> Synthesize[Synthesize Token-by-Token]
+        Synthesize --> Response["Output: 'fur'"]
+    end
+```
 
 ---
 

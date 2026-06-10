@@ -361,3 +361,50 @@ def run_verification():
 
 if __name__ == "__main__":
     run_verification()
+    
+    print("\n" + "=" * 50)
+    print("      LIVE INTERACTIVE SI PLAYGROUND")
+    print("=" * 50)
+    print("Type facts to learn dynamically, e.g.:")
+    print("  > Fish likes water.")
+    print("  > Plant likes water.")
+    print("Type questions to perform relational reasoning, e.g.:")
+    print("  > What do fish and plant share?")
+    print("Special Commands:")
+    print("  > graph : Print the current concept space memory graph")
+    print("  > exit  : Quit the playground")
+    print("=" * 50)
+    
+    # Initialize a clean system for the playground
+    si = SyntheticIntelligenceSystem()
+    # Pre-populate with the test suite cases so they are ready to query
+    si.interact("Cat has fur.")
+    si.interact("Dog has fur.")
+    
+    while True:
+        try:
+            line = input("\nSI > ").strip()
+            if not line:
+                continue
+            if line.lower() in ("exit", "quit"):
+                print("Exiting playground. Goodbye!")
+                break
+            if line.lower() == "graph":
+                if si.memory.is_empty():
+                    print("[Memory is empty]")
+                else:
+                    print("\n--- CONCEPT MEMORY GRAPH DUMP ---")
+                    for name, node in si.memory.nodes.items():
+                        for rel, targets in node.out_relations.items():
+                            for target in targets:
+                                print(f"  ({name}) --[{rel}]--> ({target.name})")
+                    print("---------------------------------")
+                continue
+            
+            response = si.interact(line)
+            print(f"SI > {response}")
+        except KeyboardInterrupt:
+            print("\nExiting playground. Goodbye!")
+            break
+        except Exception as e:
+            print(f"Error: {e}")
